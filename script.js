@@ -193,6 +193,7 @@ function criaErro(divPai, msg){
 }
 
 function emptyCamp(e){
+    let flag = true;
     const nomeDiv = document.querySelector('.nome-loja');
     const endDiv = document.querySelector('.end-loja');
     const numDiv = document.querySelector('.num-loja');
@@ -201,47 +202,60 @@ function emptyCamp(e){
     if(allInputs[0].value == ''){
         e.preventDefault();
         criaErro(nomeDiv, 'Insira o nome!');
+        flag = false;
     }
     if(allInputs[6].value == ''){
         e.preventDefault();
         criaErro(endDiv, 'Insira o endereço!');
+        flag = false;
     }
     if(allInputs[7].value == ''){
         e.preventDefault();
         criaErro(numDiv, 'Insira o numero!');
+        flag = false;
     }
     if(allInputs[8].value == ''){
         e.preventDefault();
         criaErro(bairroDiv, 'Insira o bairro!');
+        flag = false;
     }
     if(allInputs[9].value == ''){
         e.preventDefault();
         criaErro(complementDiv, 'Insira um complemento!');
+        flag = false;
     }
     if(selecEstado.value == 'placeholder'){
         e.preventDefault();
         criaErro(document.querySelector('.estado'), 'Insira um estado!');
         criaErro(document.querySelector('.cidade'), 'Insira uma cidade!');
+        flag = false;
     }
+
+    return flag;
     
 }
 
 function validLen(e){
+    let flag = true;
     const cnpjDiv = document.querySelector('.cnpj-loja');
     const dataDiv = document.querySelector('.div-data');
     const cepDiv = document.querySelector('.cep-loja');
     if(inputCnpj.value.length < 18){
         e.preventDefault();
         criaErro(cnpjDiv, 'Insira todos os números do CNPJ!');
+        flag = false;
     }
     if(inputData.value.length < 16){
         e.preventDefault();
         criaErro(dataDiv, 'Insira data e hora completas!');
+        flag = false;
     }
     if(inputCep.value.length < 9){
         e.preventDefault();
         criaErro(cepDiv, 'Insira todos os números do CEP!');
+        flag = false;
     }
+    return flag;
 }
 
 
@@ -316,9 +330,10 @@ function horarioEscolhido(x){
 
 
 btnSubmit.addEventListener('click', (e)=>{
+    let flag;
     clearFirst();
-    emptyCamp(e);
-    validLen(e);
+    flag = emptyCamp(e);
+    flag = flag === false ? false : validLen(e);
     const objForm = {
         'Nome da Loja': `${allInputs[0].value}`,
         'CNPJ': `${allInputs[1].value}`,
@@ -343,5 +358,5 @@ btnSubmit.addEventListener('click', (e)=>{
             'Domingo' : `${horarioEscolhido(6)}`
         }
     }
-    alert(JSON.stringify(objForm));
+    if(flag) alert(JSON.stringify(objForm));
 });
